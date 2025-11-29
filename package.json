@@ -5,10 +5,10 @@
   "license": "MIT",
   "scripts": {
     "dev:client": "vite dev --port 5000",
-    "dev": "cross-env NODE_ENV=development tsx server/index.ts",
+    "dev": "cross-env NODE_ENV=development npx tsx server/index.ts",
     "dev:all": "cross-env NODE_ENV=development concurrently \"npm:dev\" \"npm:dev:client\"",
-    "build": "tsx script/build.ts",
-    "build:client": "tsx script/build-client.ts",
+    "build": "npx tsx script/build.ts",
+    "build:client": "npx tsx script/build-client.ts",
     "start": "cross-env NODE_ENV=production node dist/index.cjs",
     "check": "tsc",
     "db:push": "drizzle-kit push"

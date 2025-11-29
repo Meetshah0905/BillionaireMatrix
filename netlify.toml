@@ -4,7 +4,7 @@
 
 [build.environment]
   NODE_VERSION = "20"
-  NPM_FLAGS = "--legacy-peer-deps"
+  NPM_FLAGS = "--include=dev --legacy-peer-deps"
   NODE_ENV = "production"
 
 # SPA fallback - redirect all non-file requests to index.html
