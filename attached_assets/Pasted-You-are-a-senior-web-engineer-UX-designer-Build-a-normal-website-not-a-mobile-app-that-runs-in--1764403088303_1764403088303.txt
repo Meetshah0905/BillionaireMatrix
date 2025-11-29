@@ -1,0 +1,357 @@
+You are a senior web engineer + UX designer. Build a normal website (not a mobile app) that runs in all modern web browsers (Chrome, Safari, Firefox, Edge) and is responsive for both phone browsers and desktop.
+
+Non-negotiable: this must look like a clean tool, not a flashy product
+
+Do NOT use:
+
+gradients, glows, glassmorphism, neon colors
+
+giant rounded buttons, floating action buttons, card stacks
+
+heavy animations, parallax, fancy effects
+
+“credit card” UI
+
+dark theme by default
+
+Make it look like a calm, practical spreadsheet-like planner:
+
+background: #fafafa or similar
+
+text: near-black
+
+thin borders, subtle separators
+
+one accent color maximum (optional)
+
+typography: system font stack
+
+everything readable and clickable on mobile
+
+Tech stack (website)
+
+Build as a standard website using:
+
+Next.js (App Router) + TypeScript (deployed as a normal web site)
+
+Styling: plain CSS Modules (no UI frameworks)
+
+State: Zustand
+
+Validation: Zod
+
+Tests: Vitest + Testing Library
+
+Persistence: localStorage (with versioning + migration)
+
+No external APIs. No paid services. No API keys. No database required.
+
+The Matrix model (exact logic)
+
+Axes:
+
+Energy: Gives vs Takes
+
+Money: Makes vs Takes
+
+Quadrants:
+
+Gives Energy + Takes Money = PROTECT
+
+Gives Energy + Makes Money = PRIORITIZE
+
+Takes Energy + Takes Money = DELETE
+
+Takes Energy + Makes Money = DELEGATE
+
+Single-page layout (simple)
+
+One page only: /
+
+Top to bottom sections:
+
+Header
+
+Title: Billionaire Matrix
+
+Subtitle: Classify tasks by energy and money
+
+Task entry area (always visible)
+
+Input: Task title (required)
+
+Notes textarea: collapsed by default with “Add notes” toggle
+
+Live suggestion panel (updates as user types)
+
+Buttons: “Accept suggestion” and “Add task”
+
+Manual overrides:
+
+Energy: Gives / Takes toggle (radio buttons)
+
+Money: Makes / Takes toggle (radio buttons)
+
+These appear beside suggestion and override it
+
+Matrix table (main UI)
+Render a true table/grid (not cards):
+
+2 columns (Takes Money, Makes Money)
+
+2 rows (Gives Energy, Takes Energy)
+
+Each cell shows:
+
+Quadrant name as header
+
+Plain list of tasks inside, as rows
+
+Task row must show:
+
+title
+
+small text badges for Energy and Money
+
+confidence % (if suggested/learned)
+
+Edit button
+
+Delete button
+
+Utility bar (below matrix)
+
+Search box (filters visible tasks)
+
+Filters:
+
+Quadrant filter (All / Protect / Prioritize / Delete / Delegate)
+
+Energy filter (All / Gives / Takes)
+
+Money filter (All / Makes / Takes)
+
+Export JSON button (downloads file)
+
+Import JSON button (file picker)
+
+Reset learned rules button
+
+Responsive behavior (phone + desktop)
+
+On desktop:
+
+Matrix displays as 2x2 grid side by side.
+
+On phone:
+
+Matrix becomes stacked:
+
+Show row headers and columns in a readable vertical format
+
+Example: show Protect, Prioritize, Delete, Delegate as collapsible sections or a stacked grid
+
+Controls remain usable without horizontal scrolling.
+
+Tap targets at least 44px tall.
+
+Suggestion engine (offline heuristic, explainable)
+
+Implement suggestClassification(text, customRules) as a pure function.
+
+Requirements:
+
+Works offline
+
+Explainable output (Why)
+
+Learns locally from user overrides
+
+Input normalization
+
+lowercase
+
+remove punctuation
+
+trim extra spaces
+
+simple stemming: remove trailing “s”, “ing”, “ed” when reasonable
+
+Base weighted keywords (must include these)
+
+Money TAKES keywords (negative):
+rent, bill, tax, subscription, fee, pay, purchase, buy, expense, insurance, debt, interest, groceries, fuel, repair, membership
+
+Money MAKES keywords:
+business, sales, sell, revenue, profit, client, invoice, freelance, marketing, close, lead, pitch, ship, launch, productize, pricing, raise prices
+
+Energy GIVES keywords:
+gym, workout, run, walk, sleep, meditate, family, friends, journaling, reading, sunlight, rest, plan, organize, meal prep
+
+Energy TAKES keywords:
+taxes, paperwork, admin, commute, meeting, conflict, argument, chores, cleaning, errands, waiting, complaint, support
+
+Each keyword has a weight (1–5). Use weights to create a numeric score:
+
+moneyScore: -5..+5
+
+energyScore: -5..+5
+
+Decision:
+
+If moneyScore >= 0 => moneySide = makes else takes
+
+If energyScore >= 0 => energySide = gives else takes
+
+Confidence based on margin between competing scores; return 0–100
+
+Phrase boosts (must implement these)
+
+Hard-coded phrase patterns that override or strongly boost:
+
+“file taxes” / “tax filing” => Takes Energy + Takes Money
+
+“hire va” / “hire assistant” => Gives Energy + Takes Money
+
+“launch mvp” => Takes Energy + Makes Money
+
+“go to gym” / “gym” => Gives Energy + Takes Money
+
+“business” => Gives Energy + Makes Money
+
+Local learning by overrides
+
+If user manually changes suggested sides and then adds the task:
+
+Save a custom rule under normalized phrase:
+customRules[phrase] = { energySide, moneySide, count }
+
+Next time a matching phrase appears, suggestion should use this with high confidence.
+
+Partial-match boost: if phrase contains a saved rule key or shares tokens, add weight.
+
+Explainability panel
+
+The suggestion panel must show:
+
+Suggested quadrant
+
+Confidence %
+
+Matched keywords list
+
+Numeric scores (moneyScore, energyScore)
+
+If a learned rule was used, show “Learned from your past choice”
+
+Data model (TypeScript)
+
+Task:
+
+id (uuid)
+
+title
+
+notes?
+
+createdAt, updatedAt
+
+energySide: "gives" | "takes"
+
+moneySide: "makes" | "takes"
+
+energyScore: number (-5..+5)
+
+moneyScore: number (-5..+5)
+
+source: "suggested" | "manual" | "learned"
+
+suggestion: {
+confidence: number;
+matched: string[];
+usedLearnedRule?: boolean;
+moneyScoreRaw: number;
+energyScoreRaw: number;
+}
+
+Editing tasks (must be clean)
+
+Edit opens inline or in a small modal (plain styling):
+
+change title/notes
+
+override energy/money
+
+saving updates quadrant placement
+
+Storage rules
+
+Persist:
+
+tasks
+
+customRules
+
+schemaVersion
+
+Implement a migration function:
+
+if schemaVersion missing, treat as v1 and migrate safely
+
+Accessibility & keyboard
+
+Enter in title input adds task (if valid)
+
+Tab order is logical
+
+Buttons have accessible labels
+
+Focus outlines visible
+
+Deliverables
+
+You must output a complete working repo with:
+
+File tree
+
+Every file fully included (no placeholders)
+
+README with:
+
+npm install
+
+npm run dev
+
+npm test
+
+Tests:
+
+Unit tests for suggestClassification with these exact expectations:
+
+gym => gives + takes money
+
+business => gives + makes money
+
+tax filing => takes + takes money
+
+hire VA => gives + takes money
+
+launch MVP => takes + makes money
+
+Unit test for quadrant mapping
+
+UI test that types “gym”, clicks accept/add, and verifies it appears under PROTECT cell
+
+Output format rules
+
+When responding:
+
+Start with the file tree
+
+Then emit each file in its own fenced code block
+
+At top of each file block include a comment with the relative path
+
+The project must run immediately with npm install then npm run dev
+
+Now generate the full codebase.
