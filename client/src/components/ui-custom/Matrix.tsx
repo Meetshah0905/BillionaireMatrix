@@ -27,49 +27,65 @@ export function Matrix() {
 
   return (
     <div className="w-full">
-        {/* Desktop Headers */}
-        <div className="hidden md:grid grid-cols-[auto_1fr_1fr] gap-6 mb-2">
-            <div className="w-8"></div> {/* Spacer for row header */}
-            <div className="text-center text-xs font-bold text-muted-foreground uppercase tracking-widest bg-muted/30 py-1 rounded">
+        {/* Desktop Axis Labels */}
+        <div className="hidden md:grid grid-cols-[40px_1fr_1fr] gap-6 mb-4">
+            <div></div> {/* Corner spacer */}
+            <div className="text-center text-xs font-bold text-[var(--muted)] uppercase tracking-[0.2em]">
                 Takes Money (-$)
             </div>
-            <div className="text-center text-xs font-bold text-muted-foreground uppercase tracking-widest bg-muted/30 py-1 rounded">
+            <div className="text-center text-xs font-bold text-[var(--muted)] uppercase tracking-[0.2em]">
                 Makes Money (+$)
             </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-[auto_1fr_1fr] gap-4 md:gap-6 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-[40px_1fr_1fr] gap-6 w-full">
             
             {/* Row 1: Gives Energy */}
-            <div className="hidden md:flex items-center justify-center">
-                <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest -rotate-90 w-8 whitespace-nowrap">
+            <div className="hidden md:flex items-center justify-center h-full">
+                <div className="text-xs font-bold text-[var(--muted)] uppercase tracking-[0.2em] -rotate-90 w-[200px] text-center whitespace-nowrap">
                     Gives Energy (+E)
                 </div>
             </div>
 
-            <div className="space-y-1">
-                 <MatrixCell quadrant="PROTECT" tasks={protectTasks} className="h-[300px] md:h-[400px]" />
-                 <div className="text-center text-xs text-muted-foreground mt-1 md:hidden font-medium">Gives Energy + Takes Money</div>
+            <div className="space-y-1 h-full">
+                 <MatrixCell 
+                    quadrant="PROTECT" 
+                    sublabel="+Energy / -Money"
+                    tasks={protectTasks} 
+                    className="h-[300px] md:h-[420px]" 
+                 />
             </div>
-            <div className="space-y-1">
-                <MatrixCell quadrant="PRIORITIZE" tasks={prioritizeTasks} className="h-[300px] md:h-[400px] border-primary/20 ring-1 ring-primary/5 bg-primary/[0.02]" />
-                 <div className="text-center text-xs text-muted-foreground mt-1 md:hidden font-medium">Gives Energy + Makes Money</div>
+            <div className="space-y-1 h-full">
+                <MatrixCell 
+                    quadrant="PRIORITIZE" 
+                    sublabel="+Energy / +Money"
+                    tasks={prioritizeTasks} 
+                    className="h-[300px] md:h-[420px]" 
+                />
             </div>
 
             {/* Row 2: Takes Energy */}
-            <div className="hidden md:flex items-center justify-center">
-                <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest -rotate-90 w-8 whitespace-nowrap">
+            <div className="hidden md:flex items-center justify-center h-full">
+                <div className="text-xs font-bold text-[var(--muted)] uppercase tracking-[0.2em] -rotate-90 w-[200px] text-center whitespace-nowrap">
                     Takes Energy (-E)
                 </div>
             </div>
 
-            <div className="space-y-1">
-                <MatrixCell quadrant="DELETE" tasks={deleteTasks} className="h-[300px] md:h-[400px] bg-red-50/10" />
-                 <div className="text-center text-xs text-muted-foreground mt-1 md:hidden font-medium">Takes Energy + Takes Money</div>
+            <div className="space-y-1 h-full">
+                <MatrixCell 
+                    quadrant="DELETE" 
+                    sublabel="-Energy / -Money"
+                    tasks={deleteTasks} 
+                    className="h-[300px] md:h-[420px]" 
+                />
             </div>
-            <div className="space-y-1">
-                <MatrixCell quadrant="DELEGATE" tasks={delegateTasks} className="h-[300px] md:h-[400px]" />
-                 <div className="text-center text-xs text-muted-foreground mt-1 md:hidden font-medium">Takes Energy + Makes Money</div>
+            <div className="space-y-1 h-full">
+                <MatrixCell 
+                    quadrant="DELEGATE" 
+                    sublabel="-Energy / +Money"
+                    tasks={delegateTasks} 
+                    className="h-[300px] md:h-[420px]" 
+                />
             </div>
         </div>
     </div>

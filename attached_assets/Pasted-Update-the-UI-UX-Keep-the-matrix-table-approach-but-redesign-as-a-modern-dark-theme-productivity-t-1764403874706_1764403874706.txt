@@ -1,0 +1,184 @@
+Update the UI/UX. Keep the matrix/table approach, but redesign as a modern dark-theme productivity tool.
+
+Hard rules
+
+Must be dark theme by default.
+
+No gradients, no glassmorphism, no neon glow, no heavy animation.
+
+Use subtle borders, subtle shadows, and good spacing.
+
+Everything must be readable with proper contrast (WCAG-ish).
+
+Visual style goals
+
+Think: Notion + Linear vibe (dark), clean and sharp.
+
+Calm dark background
+
+Clear hierarchy
+
+Nice badges
+
+“Empty” states that don’t look like placeholders
+
+Quadrants feel like distinct panels without being loud
+
+Design tokens (use CSS variables)
+
+Implement a token system in globals.css (or CSS module) and use it everywhere:
+
+:root {
+  --bg: #0b0f14;
+  --panel: #111827;
+  --panel-2: #0f172a;
+  --border: rgba(255,255,255,0.08);
+  --border-2: rgba(255,255,255,0.12);
+
+  --text: rgba(255,255,255,0.92);
+  --muted: rgba(255,255,255,0.65);
+  --faint: rgba(255,255,255,0.45);
+
+  --accent: #7c3aed;         /* purple */
+  --good: #22c55e;           /* green */
+  --bad: #f97316;            /* orange */
+  --danger: #ef4444;
+
+  --radius: 14px;
+  --radius-sm: 10px;
+  --shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
+Layout improvements (make it feel designed)
+
+Center the content with a max width (like 1100–1200px) and generous padding.
+
+Increase spacing between quadrants (gap: 16px–20px).
+
+Quadrant panels should have:
+
+background --panel
+
+a subtle border --border
+
+slight shadow --shadow
+
+rounded corners --radius
+
+Quadrant header row:
+
+sticky inside the panel (so title stays when list scrolls)
+
+shows quadrant name + count on the right
+
+small sublabel like “+Energy / -Money” under the quadrant name
+
+Matrix styling (make axes look intentional)
+
+Top axis labels (Takes Money / Makes Money) should be small caps, muted, letter spacing.
+
+Left axis labels (Gives Energy / Takes Energy) should be vertical but tasteful:
+
+on desktop: vertical label
+
+on mobile: horizontal labels above each row (no rotated text)
+
+Task rows (upgrade from boring list)
+
+Each task should render as a compact row pill:
+
+Background: slightly brighter than panel (--panel-2)
+
+Border: --border
+
+Padding: 10–12px
+
+Title: medium weight
+
+On hover (desktop): border becomes --border-2 and background slightly brighter
+
+Right side actions: small icon buttons or text buttons “Edit / Delete” (no huge icons)
+
+Badges:
+
+Energy badge:
+
+Gives = green tint, Takes = orange tint
+
+Money badge:
+
+Makes = green tint, Takes = orange tint
+Badges should be tiny, uppercase, subtle, rounded.
+
+Confidence:
+
+Show as “Conf: 82%” in muted text, or a small thin bar.
+
+If confidence < 55%, show “Low confidence” (muted warning).
+
+Input area (make it clean and usable)
+
+Top input section should be a single panel:
+
+Two-column layout on desktop:
+
+left: inputs
+
+right: suggestion panel (“Suggested: PROTECT, Conf 78%, because: gym, workout, membership…”)
+
+On mobile: stacks vertically.
+
+Input styling:
+
+Dark input backgrounds
+
+clear focus state (outline using --accent)
+
+Enter key adds task
+
+A small “Override” area with radio toggles for Energy/Money
+
+Buttons:
+
+Primary button: solid accent background --accent
+
+Secondary: neutral dark button with border
+
+No floating buttons.
+
+Empty states (make them not sad)
+
+Instead of “No tasks”, use:
+
+“Drop tasks here by adding above.”
+
+show 2–3 example tasks in faint text inside empty quadrants (non-clickable hints).
+
+Mobile responsiveness (important)
+
+On phone:
+
+Switch from 2x2 grid to stacked sections:
+
+PROTECT, PRIORITIZE, DELETE, DELEGATE as four panels stacked.
+
+Keep the axis meaning visible in each panel subtitle.
+
+Keep counts visible.
+
+Don’t force horizontal scrolling.
+
+Deliverable change request
+
+Refactor the current UI to match this design. Keep all existing logic.
+Do not change the underlying quadrant logic or suggestion engine.
+
+Also add a theme toggle (optional):
+
+Dark default
+
+Light theme available in Settings area or a small toggle at top right
+
+Store theme preference in localStorage
+
+Now update the code accordingly (CSS + layout + componen
